@@ -50,6 +50,22 @@ The data follows an ROCCC approch:
 
                                                   3. PROCESS
 
-  
+
+  Google spreadsheet and R Studio Cloud (PositCloud) will be used to process the data as the tool functionality fits the purpose.
+
+Data cleaning
+sleepDay_merged.csv and weightLogInfo_merged.csv are loaded into Google sheet for data cleaning. The fields “SleepDay” and “Date” were not correctly formatted. The following steps has been done:
+
+The date column has been select and format to ‘Date’ using spreadsheet function
+Time in the column has been removed as time is irrelevant in this analysis
+
+Data integrity
+The selected data has been loaded into R Studio for analysis. The following queries have been run to check the number of unique Id in each table
+
+ dim(sleep_day)
+sum(is.na(sleep_day))
+sum(duplicated(sleep_day))
+sleep_day <- sleep_day[!duplicated(sleep_day), ]
+
 
 
