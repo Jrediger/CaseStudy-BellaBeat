@@ -69,9 +69,9 @@ The selected data has been loaded into R Studio for analysis. The following quer
 
 * 2. Load CVS files containing the data we are using for this study
 
-  # set working directory
-  # setwd ("~/FitBit Case Study")
-  # loading files
+  set working directory
+  setwd ("~/FitBit Case Study")
+  loading files
 DataMerges <- read.csv("DataMerged.csv")
 DailySteps <- read.csv("DailySteps.csv")
 SleepDay <- read.csv("SleepDay.cvs")
