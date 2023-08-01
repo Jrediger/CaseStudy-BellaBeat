@@ -62,10 +62,141 @@ Time in the column has been removed as time is irrelevant in this analysis
 Data integrity
 The selected data has been loaded into R Studio for analysis. The following queries have been run to check the number of unique Id in each table
 
- dim(sleep_day)
-sum(is.na(sleep_day))
-sum(duplicated(sleep_day))
-sleep_day <- sleep_day[!duplicated(sleep_day), ]
+* 1. First Load Packages into R:
+
+ library("tidyverse")
+ library("ggplot2")
+
+* 2. Load CVS files containing the data we are using for this study
+
+  # set working directory
+  # setwd ("~/FitBit Case Study")
+  # loading files
+DataMerges <- read.csv("DataMerged.csv")
+DailySteps <- read.csv("DailySteps.csv")
+SleepDay <- read.csv("SleepDay.cvs")
+WeightLogInfo <- read.csv("WeightLogInfo.csv")
+
+* 3. Identify the number of users by using the n_distinct function
+
+     n_distinct(DataMerged$Id)
+[1] 33
+     n_distinct(DailySteps$Id)
+## [1] 33
+    n_distinct(WeightLogInfo$Id)
+## [1] 8
+   n_distinct(SleepDay$Id)
+## [1] 24
+
+### Because the limited amount of data provided from the WeightLogInfo we will not be including that within our analysis
+
+4. Data Clean Up
+
+   head(SleepDay)
+# A tibble: 6 × 5
+          Id SleepDay TotalSleepRecords TotalMinutesAsleep TotalTimeInBed
+1 1503960366 4/12/20…                 1                327            346
+2 1503960366 4/13/20…                 2                384            407
+3 1503960366 4/15/20…                 1                412            442
+4 1503960366 4/16/20…                 2                340            367
+5 1503960366 4/17/20…                 1                700            712
+6 1503960366 4/19/20…                 1                304            320
+## Previously in Google Sheets the data included date and time (12:00:00) since that time was irrelevent I removed it to make the data easier to work with.
+Next, 
+  # Renaming Column from SleepDay to Date
+colnames(SleepDay) = "Date"
+head(SleepDay)
+head(SleepDay)
+# A tibble: 6 × 5
+          Id Date        TotalSleepRecords TotalMinutesAsleep TotalTimeInBed
+1 1503960366 4/12/2016                 1               327           346
+2 1503960366 4/13/2016                 2               384           407
+3 1503960366 4/15/2016                 1               412           442
+4 1503960366 4/16/2016                 2               340           367
+5 1503960366 4/17/2016                 1               700           712
+6 1503960366 4/19/2016                 1               304           320
+
+* DataMerged (DailyActivity)
+   head(DataMerged)
+
+##           Id ActivityDate TotalSteps TotalDistance TrackerDistance
+## 1 1503960366    4/12/2016      13162          8.50            8.50
+## 2 1503960366    4/13/2016      10735          6.97            6.97
+## 3 1503960366    4/14/2016      10460          6.74            6.74
+## 4 1503960366    4/15/2016       9762          6.28            6.28
+## 5 1503960366    4/16/2016      12669          8.16            8.16
+## 6 1503960366    4/17/2016       9705          6.48            6.48
+##   LoggedActivitiesDistance VeryActiveDistance ModeratelyActiveDistance
+## 1                        0               1.88                     0.55
+## 2                        0               1.57                     0.69
+## 3                        0               2.44                     0.40
+## 4                        0               2.14                     1.26
+## 5                        0               2.71                     0.41
+## 6                        0               3.19                     0.78
+##   LightActiveDistance SedentaryActiveDistance VeryActiveMinutes
+## 1                6.06                       0                25
+## 2                4.71                       0                21
+## 3                3.91                       0                30
+## 4                2.83                       0                29
+## 5                5.04                       0                36
+## 6                2.51                       0                38
+##   FairlyActiveMinutes LightlyActiveMinutes SedentaryMinutes Calories
+## 1                  13                  328              728     1985
+## 2                  19                  217              776     1797
+## 3                  11                  181             1218     1776
+## 4                  34                  209              726     1745
+## 5                  10                  221              773     1863
+## 6                  20                  164              539     1728
+
+# The LoggedActivitiesDistance and SedentaryActiveDistance didn't provide any necessary so I will be removing them from further analysis.
+    DataMerged <- (DataMerged[c(-6, -10)])
+    colnames(DataMerged)[2] = "Date"
+    # View Updated Data within DataMerged
+    head(DataMerged)
+
+    ##           Id      Date TotalSteps TotalDistance TrackerDistance
+## 1 1503960366 4/12/2016      13162          8.50            8.50
+## 2 1503960366 4/13/2016      10735          6.97            6.97
+## 3 1503960366 4/14/2016      10460          6.74            6.74
+## 4 1503960366 4/15/2016       9762          6.28            6.28
+## 5 1503960366 4/16/2016      12669          8.16            8.16
+## 6 1503960366 4/17/2016       9705          6.48            6.48
+##   VeryActiveDistance ModeratelyActiveDistance LightActiveDistance
+## 1               1.88                     0.55                6.06
+## 2               1.57                     0.69                4.71
+## 3               2.44                     0.40                3.91
+## 4               2.14                     1.26                2.83
+## 5               2.71                     0.41                5.04
+## 6               3.19                     0.78                2.51
+##   VeryActiveMinutes FairlyActiveMinutes LightlyActiveMinutes SedentaryMinutes
+## 1                25                  13                  328              728
+## 2                21                  19                  217              776
+## 3                30                  11                  181             1218
+## 4                29                  34                  209              726
+## 5                36                  10                  221              773
+## 6                38                  20                  164              539
+##   Calories
+## 1     1985
+## 2     1797
+## 3     1776
+## 4     1745
+## 5     1863
+## 6     1728
+
+# Last, Daily Steps
+    head(DailySteps)
+          Id ActivityDay StepTotal
+1 1503960366   4/12/2016     13162
+2 1503960366   4/13/2016     10735
+3 1503960366   4/14/2016     10460
+4 1503960366   4/15/2016      9762
+5 1503960366   4/16/2016     12669
+6 1503960366   4/17/2016      9705
 
 
+                                                    4. Analyze
 
+summary(DataMerged$TotalSteps)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      0    3790    7406    7638   10727   36019 
+      ![image](https://github.com/Jrediger/CaseStudy-BellaBeat/assets/130318773/d062f48a-9d8b-4a45-95e6-61b97b8b7c86)
