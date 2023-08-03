@@ -66,36 +66,39 @@ The selected data has been loaded into R Studio for analysis. The following quer
 
 * 1. First Load Packages into R:
 
-     library("tidyverse")
-     library("ggplot2")
+           library("tidyverse")
+           library("ggplot2")
 
 * 2. Load CVS files containing the data we are using for this study
 
-    set working directory
-    setwd ("~/FitBit Case Study")
-    loading files
-    DataMerges <- read.csv("DataMerged.csv")
-    DailySteps <- read.csv("DailySteps.csv")
-    SleepDay <- read.csv("SleepDay.cvs")
-    WeightLogInfo <- read.csv("WeightLogInfo.csv")
+          set working directory
+          setwd ("~/FitBit Case Study")
+          loading files
+          DataMerges <- read.csv("DataMerged.csv")
+          DailySteps <- read.csv("DailySteps.csv")
+          SleepDay <- read.csv("SleepDay.cvs")
+          WeightLogInfo <- read.csv("WeightLogInfo.csv")
 
 * 3. Identify the number of users by using the n_distinct function
 
-     n_distinct(DataMerged$Id)
-     * [1] 33
-     n_distinct(DailySteps$Id)
-     * [1] 33
-    n_distinct(WeightLogInfo$Id)
-     * [1] 8
-   n_distinct(SleepDay$Id)
-     * [1] 24
+         n_distinct(DataMerged$Id)
+         * [1] 33
+     
+           n_distinct(DailySteps$Id)
+           * [1] 33
+
+          n_distinct(WeightLogInfo$Id)
+           * [1] 8
+         n_distinct(SleepDay$Id)
+           * [1] 24
 
 ### Because the limited amount of data provided from the WeightLogInfo we will not be including that within our analysis
 
 4. Data Clean Up
 
        head(SleepDay)
-# A tibble: 6 × 5
+
+
           Id SleepDay TotalSleepRecords TotalMinutesAsleep TotalTimeInBed
 * 1 1503960366 4/12/20…                 1                327            346
 * 2 1503960366 4/13/20…                 2                384            407
