@@ -225,7 +225,7 @@ Next,
         0    3790    7406    7638   10727   36019 
    
      
-      ![image](https://github.com/Jrediger/CaseStudy-BellaBeat/assets/130318773/d062f48a-9d8b-4a45-95e6-61b97b8b7c86)
+  ![image](https://github.com/Jrediger/CaseStudy-BellaBeat/assets/130318773/d062f48a-9d8b-4a45-95e6-61b97b8b7c86)
 
   # SleepDay
   *  Average Amount Of Sleep
